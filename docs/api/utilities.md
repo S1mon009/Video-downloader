@@ -10,6 +10,20 @@ The console utility provides terminal-related functionality.
 
 Clears the current terminal screen in a platform-aware way.
 
+## Notifications
+
+The notification utility provides notification cross-platform functionality.
+
+### `send_notification`
+
+Send notification to user with specific title and message.
+
 ## Class reference
+
 ### Console
+
 :::src.utils.console
+
+### Notifications
+
+:::src.utils.notifications

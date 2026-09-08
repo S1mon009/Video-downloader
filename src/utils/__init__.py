@@ -6,5 +6,6 @@ Modules:
 """
 
 from .console import clear_console
+from .notifications import send_notification
 
-__all__ = ['clear_console']
+__all__ = ['clear_console', 'send_notification']

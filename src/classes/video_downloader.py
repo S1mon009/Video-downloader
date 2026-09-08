@@ -4,14 +4,13 @@ videos, audio, and playlists using yt-dlp via subprocess. It
 supports multiple quality options, output formats, network handling, and
 downloading from a .txt file containing multiple links.
 """
-
 import os
 import time
 import subprocess
 import inquirer
-from src.decorators import timed
 from src.config import video_settings, app_config
-from src.decorators import ffmpeg_required, is_connected, network_required
+from src.decorators import ffmpeg_required, is_connected, network_required, timed
+from src.utils import send_notification
 
 class VideoDownloader:
     """
@@ -212,6 +211,8 @@ class VideoDownloader:
                         ext_display = 'mp3'
                     print(f"Saving as: {self.custom_filename}.{ext_display}")
                 subprocess.run(cmd, check=True)
+                send_notification("Successful download", 
+                                  f"Saving as: {self.custom_filename}.{ext_display} to {self.download_folder}")
                 print(f"\nSuccessful download: {url}")
             except subprocess.CalledProcessError as e:
                 print(f"\nDownload error for {url}: {e}")

@@ -18,7 +18,8 @@ StreamFlow/
 │   └── timed.py
 │
 ├── utils/
-│   └── console.py
+│   ├── console.py
+│   └── notifications.py
 │
 ├── tests/
 │
@@ -42,15 +43,15 @@ This is the central component responsible for the download workflow.
 
 It handles:
 
-* source URLs;
-* playlist detection;
-* quality selection;
-* output formats;
-* destination paths;
-* yt-dlp options;
-* download execution;
-* network monitoring;
-* download errors.
+- source URLs;
+- playlist detection;
+- quality selection;
+- output formats;
+- destination paths;
+- yt-dlp options;
+- download execution;
+- network monitoring;
+- download errors.
 
 ## `config/`
 
@@ -104,8 +105,8 @@ It contains the top-level interactive loop rather than the actual media-processi
 
 Contains MkDocs configuration, including:
 
-* site metadata;
-* theme configuration;
-* navigation;
-* Markdown extensions;
-* API documentation configuration.
+- site metadata;
+- theme configuration;
+- navigation;
+- Markdown extensions;
+- API documentation configuration.
