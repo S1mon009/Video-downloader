@@ -1,0 +1,66 @@
+name: Build Windows Installer
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-installer:
+    name: Build Inno Setup installer
+    runs-on: windows-latest
+    env:
+      APP_VERSION: "0.1.${{ github.run_number }}"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build application
+        shell: pwsh
+        run: |
+          pyinstaller --noconfirm --clean --onedir --name StreamFlow `
+            --icon assets/icon.ico `
+            --add-data "assets;assets" `
+            main.py
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --yes --no-progress
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release | Out-Null
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" ".\installer\StreamFlow.iss"
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: StreamFlow-installer
+          path: release/StreamFlow-Setup-*.exe
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/StreamFlow-Setup-*.exe
+          generate_release_notes: true
