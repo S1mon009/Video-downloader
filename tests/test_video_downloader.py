@@ -16,6 +16,7 @@ def downloader_environment(monkeypatch):
     monkeypatch.setattr('src.decorators.ffmpeg.subprocess.run', fake_run)
     monkeypatch.setattr('src.decorators.connected.is_connected', lambda *a, **k: True)
     monkeypatch.setattr('src.classes.video_downloader.is_connected', lambda *a, **k: True)
+    monkeypatch.setattr('src.classes.video_downloader.send_notification', lambda *a, **k: None)
     monkeypatch.setattr('src.classes.video_downloader.VideoDownloader.verify_download_folder', lambda self: None)
     return calls
 
