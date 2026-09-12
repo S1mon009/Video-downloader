@@ -62,6 +62,22 @@ def test_custom_filename_audio(tmp_path, downloader_environment):
     assert '--audio-quality' in cmd
     assert '--no-playlist' in cmd
 
+def test_download_notification_uses_output_path_without_custom_filename(
+    tmp_path, downloader_environment, monkeypatch
+):
+    notifications = []
+    monkeypatch.setattr(
+        'src.classes.video_downloader.send_notification',
+        lambda title, message: notifications.append((title, message)),
+    )
+    d = _get_downloader(tmp_path, custom_filename=None)
+
+    d.download_video()
+
+    assert notifications == [
+        ('Successful download', f"Saved to: {tmp_path / '%(title)s.%(ext)s'}")
+    ]
+
 def test_playlist_download_uses_playlist_folder(tmp_path, downloader_environment):
     playlist_url = 'http://example.com/watch?v=1&list=PL123'
     playlist_folder = tmp_path / 'playlist'

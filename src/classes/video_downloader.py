@@ -211,8 +211,8 @@ class VideoDownloader:
                         ext_display = 'mp3'
                     print(f"Saving as: {self.custom_filename}.{ext_display}")
                 subprocess.run(cmd, check=True)
-                send_notification("Successful download", 
-                                  f"Saving as: {self.custom_filename} to {self.download_folder}")
+                send_notification("Successful download",
+                                  f"Saved to: {output_path}")
                 print(f"\nSuccessful download: {url}")
             except subprocess.CalledProcessError as e:
                 print(f"\nDownload error for {url}: {e}")
